@@ -324,3 +324,106 @@ function Stat({ big, small }: { big: string; small: string }) {
     </Card>
   );
 }
+
+// ---------------- Buyer visits and phone alerts ----------------
+export function PushBanner({ v, onClose }: { v: D.Visit; onClose: () => void }) {
+  return (
+    <div className="fixed inset-x-0 top-2 z-[70] mx-auto w-[calc(100%-24px)] max-w-[456px]" role="status" onClick={onClose}>
+      <div className="rounded-2xl bg-[#1c1712]/95 p-3 text-white shadow-2xl backdrop-blur">
+        <div className="mb-1 flex items-center gap-2 text-xs text-white/70">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-[var(--brand)] font-mark text-[8px] text-[#0c0701]">MIB</span>
+          HOME BASE · now
+        </div>
+        <div className="text-[15px] font-semibold leading-snug">Buyer coming {v.day === "Today" ? "today" : v.day} at {v.time}</div>
+        <div className="text-sm leading-snug text-white/85">{v.who}: {v.want} One splitter is held.</div>
+      </div>
+    </div>
+  );
+}
+
+export function BuyersComing({ c }: { c: Ctx }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const [ping, setPing] = useState<D.Visit | null>(null);
+  const coming = c.visits.filter((v) => v.state === "coming");
+  const v = c.visits.find((x) => x.id === open);
+  const set = (id: string, state: D.Visit["state"], msg: string) => { c.setVisits((all) => all.map((x) => (x.id === id ? { ...x, state } : x))); setOpen(null); c.say(msg); };
+  const show = (x: D.Visit) => { setPing(x); setTimeout(() => setPing(null), 4200); };
+
+  return (
+    <div className="mb-4">
+      <div className="mb-2 flex items-end justify-between">
+        <div className="label" style={{ color: "var(--safety)" }}>Buyers coming ({coming.length})</div>
+        {coming[0] && <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => show(coming[0])}>Show me the alert</button>}
+      </div>
+      {coming.length === 0 && <p className="rounded-xl bg-[var(--sunk)] p-3 text-sm">No one is set to stop by right now.</p>}
+      <div className="space-y-2">
+        {coming.map((x) => (
+          <Card key={x.id} className="border-l-4 border-l-[var(--brand)] p-3" onClick={() => setOpen(x.id)}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <div className="font-semibold">{x.who}</div>
+                <div className="text-sm text-[var(--muted)]">{x.want}</div>
+              </div>
+              <div className="shrink-0 text-right">
+                <div className="font-display text-xl leading-none">{x.time}</div>
+                <div className="text-xs text-[var(--muted)]">{x.day}</div>
+              </div>
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {x.held && <Pill tone="brand">1 splitter held</Pill>}
+              <span className="text-xs text-[var(--muted)]">Reminder at {x.remind}</span>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {v && (
+        <Sheet eyebrow={`Buyer coming · ${v.day} ${v.time}`} title={v.who} onClose={() => setOpen(null)}>
+          <div className="label mb-1">What they wrote on Facebook</div>
+          <div className="mb-3 max-w-[85%] rounded-2xl rounded-tl-sm bg-[var(--sunk)] p-3 text-[15px]">{v.said}</div>
+          <div className="label mb-1">What Home Base did</div>
+          <ul className="mb-4 space-y-1.5 text-sm">
+            <li>✓ Wrote back: &ldquo;See you {v.day === "Today" ? "today" : v.day} at {v.time}. One is held for you.&rdquo;</li>
+            <li>✓ Held 1 splitter so it is not sold to someone else.</li>
+            <li>✓ Buzzed your phone and put it on Today.</li>
+            <li>○ Reminds you and Kat at {v.remind}.</li>
+          </ul>
+          <div className="label mb-1">The alert on your phone</div>
+          <div className="mb-4 rounded-2xl bg-[#1c1712] p-3 text-white">
+            <div className="mb-1 text-xs text-white/70">HOME BASE · now</div>
+            <div className="text-[15px] font-semibold">Buyer coming {v.day === "Today" ? "today" : v.day} at {v.time}</div>
+            <div className="text-sm text-white/85">{v.who}: {v.want} One splitter is held.</div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button className="btn-quiet" onClick={() => set(v.id, "noshow", `${v.who} marked no show. The splitter goes back on the shelf.`)}>No show</button>
+            <button className="btn" onClick={() => set(v.id, "sold", `Sold to ${v.who}. Stock goes down by one. (Sample only.)`)}>Sold it</button>
+          </div>
+        </Sheet>
+      )}
+      {ping && <PushBanner v={ping} onClose={() => setPing(null)} />}
+    </div>
+  );
+}
+
+export function AlertRules() {
+  return (
+    <div>
+      <p className="mb-3 text-sm text-[var(--muted)]">Most messages never buzz your phone. Only a real buyer on the way does.</p>
+      <div className="space-y-2">
+        {D.alertRules.map((r) => (
+          <Card key={r.id} className="p-3">
+            <div className="flex items-start justify-between gap-2">
+              <span className="font-semibold leading-snug">{r.when}</span>
+              <Pill tone={r.buzz ? "warn" : "good"}>{r.buzz ? "Buzz now" : "No buzz"}</Pill>
+            </div>
+            <div className="mt-1 text-sm text-[var(--ink-soft)]">{r.does}</div>
+          </Card>
+        ))}
+      </div>
+      <Card className="mt-3 p-3">
+        <div className="font-semibold">Who gets told</div>
+        <div className="mt-1 text-sm text-[var(--ink-soft)]">Thomas by phone alert and a text. Kat gets the 1 hour reminder so someone is at the counter. Nothing buzzes between 8 PM and 6 AM unless the buyer is coming the next morning.</div>
+      </Card>
+    </div>
+  );
+}

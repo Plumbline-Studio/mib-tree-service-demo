@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import * as D from "../lib/data";
 import { Card, Title, Tabs, Pill, Who, BizTag, Sheet, money, cx } from "./ui";
-import { JobFolder, Folders } from "./views4";
+import { JobFolder, Folders, BuyersComing, AlertRules } from "./views4";
 
 type Set<T> = React.Dispatch<React.SetStateAction<T>>;
 export type Ctx = {
@@ -14,6 +14,7 @@ export type Ctx = {
   checklist: typeof D.openingChecklist; setChecklist: Set<typeof D.openingChecklist>;
   autoSend: boolean; setAutoSend: Set<boolean>;
   folders: D.Folder[]; setFolders: Set<D.Folder[]>;
+  visits: D.Visit[]; setVisits: Set<D.Visit[]>;
   markDone: (id: string) => void;
   go: (v: string) => void;
   say: (s: string) => void;
@@ -32,7 +33,9 @@ export function Today({ c }: { c: Ctx }) {
   const yardToday = c.loads.length;
   const splitters = D.stock.find((s) => s.biz === "splitters")!;
 
+  const visitsToday = c.visits.filter((v) => v.state === "coming" && v.day === "Today");
   const asks = [
+    ...visitsToday.map((v) => ({ key: v.id, text: `${v.who} is coming at ${v.time} to buy a splitter`, sub: `One is held for them. You and Kat get a reminder at ${v.remind}.`, go: "inbox" })),
     ...needs.map((t) => ({ key: t.id, text: `${t.from} asked about a ${t.topic.toLowerCase()}`, sub: "Splitter message. Only you can answer this one.", go: "inbox" })),
     ...(drafted.length ? [{ key: "drafts", text: `${drafted.length} splitter replies are ready`, sub: "Read them and tap Send.", go: "inbox" }] : []),
     { key: "quote", text: `Call ${hotQuote.customer} about the ${money(hotQuote.price)} quote`, sub: "David says they are ready to book.", go: "jobs" },
@@ -252,7 +255,7 @@ function Quotes({ c }: { c: Ctx }) {
 
 // ---------------- Inbox (Facebook messages about log splitters) ----------------
 export function Inbox({ c }: { c: Ctx }) {
-  const [tab, setTab] = useState<"waiting" | "sent" | "answers">("waiting");
+  const [tab, setTab] = useState<"waiting" | "sent" | "alerts" | "answers">("waiting");
   const [open, setOpen] = useState<string | null>(null);
   const [edit, setEdit] = useState("");
   const t = c.threads.find((x) => x.id === open);
@@ -274,6 +277,8 @@ export function Inbox({ c }: { c: Ctx }) {
     <div>
       <Title eyebrow="Facebook · Log splitters" title="Messages" sub="Home Base reads each splitter question and writes the reply. You only answer the hard ones." />
 
+      <BuyersComing c={c} />
+
       <Card className="mb-4 p-3">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
@@ -287,7 +292,7 @@ export function Inbox({ c }: { c: Ctx }) {
         </div>
       </Card>
 
-      <Tabs value={tab} onChange={setTab} items={[["waiting", `Waiting (${waiting.length})`], ["sent", "Sent"], ["answers", "Answer sheet"]]} />
+      <Tabs value={tab} onChange={setTab} items={[["waiting", `Waiting (${waiting.length})`], ["sent", "Sent"], ["alerts", "Alerts"], ["answers", "Answers"]]} />
 
       {tab === "waiting" && (
         <div className="space-y-2">
@@ -326,6 +331,8 @@ export function Inbox({ c }: { c: Ctx }) {
           ))}
         </div>
       )}
+
+      {tab === "alerts" && <AlertRules />}
 
       {tab === "answers" && (
         <div>

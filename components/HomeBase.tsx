@@ -42,6 +42,7 @@ export default function HomeBase() {
   const [checklist, setChecklist] = useState(D.openingChecklist);
   const [autoSend, setAutoSend] = useState(false);
   const [folders, setFolders] = useState(D.folders);
+  const [visits, setVisits] = useState(D.visits);
   const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export default function HomeBase() {
     });
   }, []);
 
-  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, folders, setFolders, markDone, go, say: setToast };
+  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, folders, setFolders, visits, setVisits, markDone, go, say: setToast };
 
   const View = ({ today: Today, jobs: Jobs, inbox: Inbox, yard: Yard, store: Store, numbers: Numbers, goals: Goals, line: Line, huddle: Huddle, problems: Problems, files: Files, feeds: Feeds, about: About, crew: CrewApp, quickbooks: QuickBooks, companies: Companies } as Record<string, React.FC<{ c: Ctx }>>)[view];
   const waiting = threads.filter((t) => t.state !== "sent").length;

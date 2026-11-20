@@ -261,7 +261,7 @@ export function About() {
       <Card className="space-y-3 p-4 text-[15px] leading-relaxed">
         <p>This is a mockup. It shows how one app could run MIB Tree Service, the grinding yard and MIB Supplies.</p>
         <p>Every name, number and message is made up. Nothing here is sent to anyone.</p>
-        <p>The first real piece we would build is the message helper. It answers Facebook questions about log splitters, using Thomas&apos;s own answers.</p>
+        <p>The first real piece we would build is the message helper. It answers Facebook questions about log splitters, using Thomas&apos;s own answers. Most messages never buzz his phone. When a buyer sets a time to stop by, he gets an alert right away and a reminder an hour before.</p>
         <p>Next comes the job board and crew app. Each job gets one folder for its estimate, photos, invoice and payment, and it stays in step with QuickBooks.</p>
         <p>Later, other tree services could use the tree side under their own name. They would only see their own jobs.</p>
       </Card>

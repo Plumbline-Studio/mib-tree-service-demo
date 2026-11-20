@@ -173,6 +173,22 @@ export const answerSheet: Answer[] = [
   { id: "a7", topic: "Dealer or bulk", rule: "Get their name and number. Send to Thomas the same hour.", mode: "ask" },
 ];
 
+// ---------- Buyer visits and alerts ----------
+export type Visit = { id: string; who: string; day: string; time: string; said: string; want: string; held: boolean; remind: string; state: "coming" | "sold" | "noshow" };
+export const visits: Visit[] = [
+  { id: "v1", who: "Dale Price", day: "Today", time: "2:30 PM", said: "Ill swing by around 2:30 today with my truck and grab one", want: "Buying 1 splitter. Bringing his own truck.", held: true, remind: "1:30 PM", state: "coming" },
+  { id: "v2", who: "Carl Dempsey", day: "Sat", time: "10:00 AM", said: "Yes hold one for me. I can be there Saturday at 10", want: "Picking up 1 splitter. Wants to see it run first.", held: true, remind: "9:00 AM Sat", state: "coming" },
+];
+export type AlertRule = { id: string; when: string; does: string; buzz: boolean };
+export const alertRules: AlertRule[] = [
+  { id: "r1", when: "A buyer gives a day and time to come by", does: "Buzz Thomas right away. Hold one splitter. Remind Thomas and Kat 1 hour before.", buzz: true },
+  { id: "r2", when: "A buyer says they are on the way or running late", does: "Buzz Thomas right away.", buzz: true },
+  { id: "r3", when: "A dealer or a bulk order asks", does: "Buzz Thomas right away with their name and number.", buzz: true },
+  { id: "r4", when: "Price, stock, hours or see it run", does: "Answered for Thomas from the answer sheet. No buzz.", buzz: false },
+  { id: "r5", when: "Payment plan, trade in or delivery", does: "Polite holding reply goes out. Shows on Today. One roundup at noon and 4 PM.", buzz: false },
+  { id: "r6", when: "A held buyer goes quiet for 2 days", does: "Hold comes off. Thomas sees it in the roundup.", buzz: false },
+];
+
 // ---------- Grinding yard ----------
 export type Load = { id: string; time: string; who: string; size: "Pickup" | "Dump truck" | "Tractor trailer"; price: number; paid: "On account" | "Cash" | "Card"; photo: boolean };
 export const loadPrices: Record<Load["size"], number> = { Pickup: 15, "Dump truck": 20, "Tractor trailer": 25 };
