@@ -71,11 +71,12 @@ export default function HomeBase() {
   return (
     <div className="min-h-screen bg-[var(--bg)]">
       <div className="mx-auto min-h-screen w-full max-w-[480px] bg-[var(--bg)]">
-        <div className="bg-[var(--brand-strong)] px-4 py-1 text-center text-[11px] text-white">Mockup with sample data. Made by Plumbline Studio.</div>
+        <div className="bg-[var(--bar)] px-4 py-1 text-center text-[11px] text-white">Mockup with sample data. Made by Plumbline Studio.</div>
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--line)] bg-[var(--bg)]/95 px-4 py-2.5 backdrop-blur">
           <Logo size={32} />
+          <span aria-hidden="true" className="h-8 w-px shrink-0 bg-[var(--line-strong)]" />
           <div className="min-w-0 flex-1">
-            <div className="font-display text-xl font-semibold leading-none">{D.company.appName}</div>
+            <div className="font-display text-[22px] leading-none">{D.company.appName}</div>
             <div className="truncate text-xs text-[var(--muted)]">MIB Tree Service · Yard · Supplies</div>
           </div>
           <button onClick={() => setMore(true)} className={cx("btn-quiet", inMore && "border-[var(--brand)] text-[var(--brand-strong)]")} aria-label="More screens">More</button>
@@ -90,8 +91,9 @@ export default function HomeBase() {
             {TABS.map((t) => (
               <li key={t.id}>
                 <a href={`#${t.id}`} onClick={(e) => { e.preventDefault(); go(t.id); }} aria-current={view === t.id ? "page" : undefined}
-                  className={cx("relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 text-[11px] font-semibold", view === t.id ? "text-[var(--brand)]" : "text-[var(--muted)]")}>
+                  className={cx("relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 text-[11px] font-semibold", view === t.id ? "text-[var(--brand-strong)]" : "text-[var(--muted)]")}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true"><path d={t.icon} /></svg>
+                  {view === t.id && <span aria-hidden="true" className="absolute inset-x-[22%] top-0 h-[3px] rounded-b bg-[var(--brand)]" />}
                   {t.label}
                   {t.id === "inbox" && waiting > 0 && <span className="absolute right-[18%] top-1.5 rounded-full bg-[var(--safety)] px-1.5 text-[10px] leading-4 text-white">{waiting}</span>}
                 </a>
@@ -111,7 +113,7 @@ export default function HomeBase() {
                 <li key={m.id}>
                   <button onClick={() => go(m.id)} className="flex min-h-[52px] w-full items-center justify-between gap-3 py-2 text-left">
                     <span className="min-w-0">
-                      <span className={cx("block font-semibold", view === m.id && "text-[var(--brand)]")}>{m.label}</span>
+                      <span className={cx("block font-semibold", view === m.id && "text-[var(--brand-strong)]")}>{m.label}</span>
                       <span className="block text-sm text-[var(--muted)]">{m.note}</span>
                     </span>
                     <span aria-hidden="true" className="text-[var(--muted)]">›</span>

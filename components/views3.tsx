@@ -62,7 +62,7 @@ export function Goals({ c }: { c: Ctx }) {
             </div>
             <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--line)] pt-2">
               <Who id={g.who} />
-              <button className="text-sm font-semibold text-[var(--brand)]" onClick={() => c.go("line")}>Line of sight</button>
+              <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => c.go("line")}>Line of sight</button>
             </div>
           </Card>
         ))}

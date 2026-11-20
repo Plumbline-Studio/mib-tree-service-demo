@@ -67,7 +67,7 @@ export function Today({ c }: { c: Ctx }) {
 
       <div className="mb-2 flex items-end justify-between">
         <div className="label">Crews right now</div>
-        <button className="text-sm font-semibold text-[var(--brand)]" onClick={() => c.go("jobs")}>All jobs</button>
+        <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => c.go("jobs")}>All jobs</button>
       </div>
       <div className="space-y-2">
         {todayJobs.slice(0, 3).map((j) => (
@@ -203,7 +203,7 @@ function JobCard({ j, onOpen, onAdvance }: { j: D.Job; onOpen: () => void; onAdv
       </button>
       <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--line)] pt-2">
         <Pill tone={statusTone[j.status]}>{D.jobStatusText[j.status]}</Pill>
-        {j.status !== "done" && <button className="text-sm font-semibold text-[var(--brand)]" onClick={onAdvance}>Mark {D.jobStatusText[nextStatus[j.status]].toLowerCase()}</button>}
+        {j.status !== "done" && <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={onAdvance}>Mark {D.jobStatusText[nextStatus[j.status]].toLowerCase()}</button>}
       </div>
     </Card>
   );
@@ -232,7 +232,7 @@ function Quotes({ c }: { c: Ctx }) {
             </div>
             <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--line)] pt-2">
               <span className={cx("text-xs font-semibold", q.age >= 7 ? "text-[var(--bad)]" : "text-[var(--muted)]")}>Sent {q.sent} · {q.age} days</span>
-              <button className="text-sm font-semibold text-[var(--brand)]" onClick={() => c.say(`Sample only. Drafts a friendly follow-up text to ${q.customer} for David to send.`)}>Follow up</button>
+              <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => c.say(`Sample only. Drafts a friendly follow-up text to ${q.customer} for David to send.`)}>Follow up</button>
             </div>
           </Card>
         ))}

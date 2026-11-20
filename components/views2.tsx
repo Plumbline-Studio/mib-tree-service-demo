@@ -61,7 +61,7 @@ export function Yard({ c }: { c: Ctx }) {
                 </div>
                 <div className="shrink-0 text-right">
                   <div className="font-semibold tabular-nums">{money(a.owed)}</div>
-                  <button className="text-sm font-semibold text-[var(--brand)]" onClick={() => c.say(`Sample only. Makes a bill for ${a.who} for Kat to check and send.`)}>Bill</button>
+                  <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => c.say(`Sample only. Makes a bill for ${a.who} for Kat to check and send.`)}>Bill</button>
                 </div>
               </Card>
             ))}

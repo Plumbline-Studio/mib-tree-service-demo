@@ -6,13 +6,12 @@ export function cx(...c: (string | false | null | undefined)[]) {
 }
 
 export function Logo({ size = 36 }: { size?: number }) {
-  // A simple tree on a round badge. Stand-in until MIB's own logo goes in.
+  // MIB Supplies wordmark: heavy black MIB, orange SUPPLIES under it, like their site.
   return (
-    <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
-      <rect width="40" height="40" rx="10" fill="var(--brand)" />
-      <path d="M20 6 L30 20 H25 L32 29 H8 L15 20 H10 Z" fill="var(--brand-ink)" />
-      <rect x="18" y="29" width="4" height="6" rx="1" fill="var(--safety)" />
-    </svg>
+    <span className="inline-flex shrink-0 flex-col items-center leading-none" role="img" aria-label="MIB Supplies">
+      <span className="font-mark tracking-tight text-[var(--ink)]" style={{ fontSize: Math.round(size * 0.72), lineHeight: 0.9 }}>MIB</span>
+      <span className="mt-[3px] font-bold text-[var(--brand)]" style={{ fontSize: Math.max(7, Math.round(size * 0.24)), letterSpacing: "0.3em", marginRight: "-0.3em" }}>SUPPLIES</span>
+    </span>
   );
 }
 

@@ -4,37 +4,39 @@
 
 /* Home Base for MIB. Phone first: one column, big tap targets, bottom tabs. */
 :root {
-  --bg: #f3f1ea; --surface: #ffffff; --sunk: #efece3; --line: #ddd8cb; --line-strong: #bdb6a4;
-  --ink: #1d2219; --ink-soft: #3a4235; --muted: #6a7062;
-  --brand: #2f5a2e; --brand-strong: #234522; --brand-ink: #ffffff; --chip: #e2ecd9;
-  --leaf: #3c7a3a; --bark: #7a5436; --sky: #2f6690; --safety: #e0701f;
+  --bg: #fdf3e7; --surface: #ffffff; --sunk: #f6eadc; --line: #ecdfcf; --line-strong: #cfbca5;
+  --ink: #0c0701; --ink-soft: #3a2f24; --muted: #6b5d4f;
+  --brand: #ec9220; --brand-strong: #9a5204; --brand-ink: #0c0701; --chip: #fbe3c4;
+  --leaf: #3c7a3a; --bark: #7a5436; --sky: #2f6690; --safety: #c2410c; --bar: #0c0701;
   --good: #2e7d3f; --bad: #b8372b; --warn: #a8670f;
   --good-bg: #e2f1e3; --bad-bg: #f8e2df; --warn-bg: #f7ecd8;
-  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
-  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bebas Neue", "Oswald", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mark: "Archivo Black", "Arial Black", system-ui, sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #12160f; --surface: #1a2016; --sunk: #222a1d; --line: #2f3828; --line-strong: #46523c;
-    --ink: #eaeee4; --ink-soft: #cdd4c3; --muted: #9aa38f;
-    --brand: #7fbf6a; --brand-strong: #a9d896; --brand-ink: #10160c; --chip: #263421;
-    --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #f2954e;
+    --bg: #0c0701; --surface: #17110a; --sunk: #211910; --line: #2e241a; --line-strong: #4a3c2d;
+    --ink: #fdf3e7; --ink-soft: #e6d8c6; --muted: #b0a08c;
+    --brand: #ec9220; --brand-strong: #f5b35e; --brand-ink: #0c0701; --chip: #3a2610;
+    --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #d9541a; --bar: #000000;
     --good: #6cc77f; --bad: #f08273; --warn: #e2a855;
     --good-bg: #1b3220; --bad-bg: #3a1e1a; --warn-bg: #33281a; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #12160f; --surface: #1a2016; --sunk: #222a1d; --line: #2f3828; --line-strong: #46523c;
-  --ink: #eaeee4; --ink-soft: #cdd4c3; --muted: #9aa38f;
-  --brand: #7fbf6a; --brand-strong: #a9d896; --brand-ink: #10160c; --chip: #263421;
-  --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #f2954e;
-  --good: #6cc77f; --bad: #f08273; --warn: #e2a855;
-  --good-bg: #1b3220; --bad-bg: #3a1e1a; --warn-bg: #33281a; color-scheme: dark;
+  --bg: #0c0701; --surface: #17110a; --sunk: #211910; --line: #2e241a; --line-strong: #4a3c2d;
+    --ink: #fdf3e7; --ink-soft: #e6d8c6; --muted: #b0a08c;
+    --brand: #ec9220; --brand-strong: #f5b35e; --brand-ink: #0c0701; --chip: #3a2610;
+    --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #d9541a; --bar: #000000;
+    --good: #6cc77f; --bad: #f08273; --warn: #e2a855;
+    --good-bg: #1b3220; --bad-bg: #3a1e1a; --warn-bg: #33281a; color-scheme: dark;
 }
 html, body { background: var(--bg); color: var(--ink); overflow-x: hidden; }
 body { font-family: var(--font-body); font-size: 16px; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
-.font-display { font-family: var(--font-display); letter-spacing: 0.01em; }
+.font-display { font-family: var(--font-display); font-weight: 400 !important; letter-spacing: 0.03em; font-synthesis: none; }
+.font-mark { font-family: var(--font-mark); font-weight: 400; }
 .label { font-size: 12px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; border-radius: .7rem; background: var(--brand); color: var(--brand-ink); padding: .55rem 1rem; font-size: 1rem; font-weight: 600; }
 .btn:active { filter: brightness(.92); }
