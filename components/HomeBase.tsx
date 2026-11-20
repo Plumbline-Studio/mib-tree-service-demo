@@ -44,6 +44,18 @@ export default function HomeBase() {
   const [folders, setFolders] = useState(D.folders);
   const [visits, setVisits] = useState(D.visits);
   const [toast, setToast] = useState<string | null>(null);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  }, []);
+
+  const flipTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("hb-theme", next); } catch {}
+    setTheme(next);
+  };
 
   useEffect(() => {
     const read = () => {
@@ -93,6 +105,13 @@ export default function HomeBase() {
             <div className="font-display text-[22px] leading-none">{D.company.appName}</div>
             <div className="truncate text-xs text-[var(--muted)]">MIB Tree Service · Yard · Supplies</div>
           </div>
+          <button onClick={flipTheme} className="btn-quiet !px-2.5" aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} title={theme === "dark" ? "Light mode" : "Dark mode"}>
+            {theme === "dark" ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" /></svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" /></svg>
+            )}
+          </button>
           <button onClick={() => setMore(true)} className={cx("btn-quiet", inMore && "border-[var(--brand)] text-[var(--brand-strong)]")} aria-label="More screens">More</button>
         </header>
 
