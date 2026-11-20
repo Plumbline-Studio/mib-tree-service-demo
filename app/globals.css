@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Home Base for MIB. Phone first: one column, big tap targets, bottom tabs. */
+:root {
+  --bg: #f3f1ea; --surface: #ffffff; --sunk: #efece3; --line: #ddd8cb; --line-strong: #bdb6a4;
+  --ink: #1d2219; --ink-soft: #3a4235; --muted: #6a7062;
+  --brand: #2f5a2e; --brand-strong: #234522; --brand-ink: #ffffff; --chip: #e2ecd9;
+  --leaf: #3c7a3a; --bark: #7a5436; --sky: #2f6690; --safety: #e0701f;
+  --good: #2e7d3f; --bad: #b8372b; --warn: #a8670f;
+  --good-bg: #e2f1e3; --bad-bg: #f8e2df; --warn-bg: #f7ecd8;
+  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12160f; --surface: #1a2016; --sunk: #222a1d; --line: #2f3828; --line-strong: #46523c;
+    --ink: #eaeee4; --ink-soft: #cdd4c3; --muted: #9aa38f;
+    --brand: #7fbf6a; --brand-strong: #a9d896; --brand-ink: #10160c; --chip: #263421;
+    --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #f2954e;
+    --good: #6cc77f; --bad: #f08273; --warn: #e2a855;
+    --good-bg: #1b3220; --bad-bg: #3a1e1a; --warn-bg: #33281a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12160f; --surface: #1a2016; --sunk: #222a1d; --line: #2f3828; --line-strong: #46523c;
+  --ink: #eaeee4; --ink-soft: #cdd4c3; --muted: #9aa38f;
+  --brand: #7fbf6a; --brand-strong: #a9d896; --brand-ink: #10160c; --chip: #263421;
+  --leaf: #7fbf6a; --bark: #c9976c; --sky: #77b0dc; --safety: #f2954e;
+  --good: #6cc77f; --bad: #f08273; --warn: #e2a855;
+  --good-bg: #1b3220; --bad-bg: #3a1e1a; --warn-bg: #33281a; color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--ink); overflow-x: hidden; }
+body { font-family: var(--font-body); font-size: 16px; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+.font-display { font-family: var(--font-display); letter-spacing: 0.01em; }
+.label { font-size: 12px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; border-radius: .7rem; background: var(--brand); color: var(--brand-ink); padding: .55rem 1rem; font-size: 1rem; font-weight: 600; }
+.btn:active { filter: brightness(.92); }
+.btn-quiet { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; border-radius: .7rem; border: 1px solid var(--line); background: var(--surface); padding: .5rem .9rem; font-size: 1rem; font-weight: 600; color: var(--ink-soft); }
+.btn-safety { background: var(--safety); color: #fff; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.pill-good { background: var(--good-bg); color: var(--good); }
+.pill-bad { background: var(--bad-bg); color: var(--bad); }
+.pill-warn { background: var(--warn-bg); color: var(--warn); }
+.pill-brand { background: var(--chip); color: var(--brand-strong); }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+.safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+.grid > * { min-width: 0; }
+.field { width: 100%; min-height: 44px; border-radius: .7rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: .5rem .75rem; font-size: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
