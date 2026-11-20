@@ -41,7 +41,7 @@ export function Yard({ c }: { c: Ctx }) {
               <div className="w-[62px] shrink-0 text-sm font-semibold tabular-nums">{l.time}</div>
               <div className="min-w-0 flex-1">
                 <div className="truncate font-semibold">{l.who}</div>
-                <div className="truncate text-sm text-[var(--muted)]">{l.size} · {l.paid}{l.photo ? " · photo" : ""}</div>
+                <div className="truncate text-sm text-[var(--muted)]">{l.size} · {l.paid}</div>
               </div>
               <div className="shrink-0 font-semibold tabular-nums">{money(l.price)}</div>
             </Card>

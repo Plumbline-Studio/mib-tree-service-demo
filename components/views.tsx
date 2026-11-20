@@ -273,7 +273,7 @@ export function Inbox({ c }: { c: Ctx }) {
           </div>
           <button role="switch" aria-checked={c.autoSend} aria-label="Send easy answers on their own" onClick={() => { c.setAutoSend(!c.autoSend); c.say(c.autoSend ? "Off. Every reply waits for your Send." : "On. Easy answers go out in under a minute."); }}
             className={cx("relative h-8 w-14 shrink-0 rounded-full transition-colors", c.autoSend ? "bg-[var(--brand)]" : "bg-[var(--line-strong)]")}>
-            <span className={cx("absolute top-1 h-6 w-6 rounded-full bg-white shadow transition-transform", c.autoSend ? "translate-x-7" : "translate-x-1")} />
+            <span className={cx("absolute left-0 top-1 h-6 w-6 rounded-full bg-white shadow transition-transform", c.autoSend ? "translate-x-7" : "translate-x-1")} />
           </button>
         </div>
       </Card>

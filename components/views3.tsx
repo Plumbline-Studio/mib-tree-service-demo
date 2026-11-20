@@ -213,7 +213,7 @@ export function Files({ c }: { c: Ctx }) {
       <div className="space-y-4">
         {D.files.map((g) => (
           <div key={g.group}>
-            <div className="mb-2"><BizTag b={g.biz} /> <span className="ml-1 font-semibold">{g.group}</span></div>
+            <div className="mb-2 flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full" style={{ background: D.bizInfo[g.biz].color }} /><span className="font-semibold">{g.group}</span></div>
             <div className="space-y-2">
               {g.items.map((f) => (
                 <button key={f.label} onClick={() => c.say(`Sample only. Opens "${f.label}" in Google Drive.`)} className="flex w-full min-w-0 items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2.5 text-left active:bg-[var(--sunk)]">
