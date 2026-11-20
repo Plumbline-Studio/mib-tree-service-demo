@@ -49,7 +49,7 @@ export function JobFolder({ j, c }: { j: D.Job; c: Ctx }) {
 
         <Card className="p-3">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <span className="flex items-center gap-2"><Tag>PHOTOS</Tag><span className="font-semibold">{total(f)} photos</span></span>
+            <span className="flex items-center gap-2"><Tag>PHOTOS</Tag><span className="font-semibold">{total(f)} {total(f) === 1 ? "photo" : "photos"}</span></span>
             <button className="text-sm font-semibold text-[var(--brand-strong)]" onClick={() => c.go("crew")}>Add photo</button>
           </div>
           {(Object.keys(D.stageText) as D.Stage[]).map((st) => (
@@ -102,7 +102,7 @@ export function Folders({ c, onOpen }: { c: Ctx; onOpen: (id: string) => void })
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="truncate font-semibold">{j.customer}</div>
-                  <div className="truncate text-sm text-[var(--muted)]">{j.day} · {total(f)} photos</div>
+                  <div className="truncate text-sm text-[var(--muted)]">{j.day} · {total(f)} {total(f) === 1 ? "photo" : "photos"}</div>
                 </div>
                 <div className="shrink-0 font-semibold tabular-nums">{money(j.price)}</div>
               </div>

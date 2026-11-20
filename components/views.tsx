@@ -206,7 +206,7 @@ function JobCard({ j, onOpen, onAdvance }: { j: D.Job; onOpen: () => void; onAdv
           </div>
           <div className="shrink-0 text-right">
             <div className="font-semibold tabular-nums">{money(j.price)}</div>
-            <div className="text-xs text-[var(--muted)]">{j.photos} photos</div>
+            <div className="text-xs text-[var(--muted)]">{j.photos} {j.photos === 1 ? "photo" : "photos"}</div>
           </div>
         </div>
       </button>
