@@ -139,7 +139,7 @@ export function CrewApp({ c }: { c: Ctx }) {
 
   return (
     <div>
-      <Title eyebrow="What the crew sees" title="Crew app" sub="The crew lead opens this on his phone. Every photo goes into the right job folder by itself." />
+      <Title eyebrow="What the crew sees" title="Crew app" sub="Crew leads open this on their phone. Every photo goes into the right job folder by itself." />
       <Tabs value={crew} onChange={setCrew} items={[["marcus", "Marcus, Crew 1"], ["jesse", "Jesse, Crew 2"]]} />
 
       <div className="space-y-2">
@@ -264,7 +264,7 @@ export function Companies({ c }: { c: Ctx }) {
             <Badge t={x} />
             <div className="min-w-0 flex-1">
               <div className="truncate font-semibold">{x.name}</div>
-              <div className="truncate text-sm text-[var(--muted)]">{x.town} · {x.crews} crews · {x.jobs} jobs this month</div>
+              <div className="truncate text-sm text-[var(--muted)]">{x.town} · {x.jobs} jobs this month</div>
             </div>
             {x.status === "you" ? <Pill tone="brand">You</Pill> : x.status === "live" ? <Pill tone="good">Paying</Pill> : <Pill tone="warn">Trying it</Pill>}
           </Card>
