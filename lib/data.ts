@@ -66,6 +66,71 @@ export const jobs: Job[] = [
   { id: "j8", customer: "Valley Feed Co.", street: "Orange Ave", work: "Clear fence line, 300 ft", crew: "jesse", time: "8:00 AM", day: "Wed", price: 4200, status: "booked", photos: 5, notes: "Two day job. Chips go to our yard.", phone: "(540) 555-0150" },
 ];
 
+// Two finished jobs from last week, so the folders show the whole chain to "paid".
+jobs.push(
+  { id: "j9", customer: "Pat Moran", street: "Starkey Rd", work: "Grind 2 stumps, rake out", crew: "marcus", time: "10:00 AM", day: "Last week", price: 480, status: "done", photos: 5, notes: "", phone: "(540) 555-0124" },
+  { id: "j10", customer: "Cave Spring Baptist", street: "Chaparral Dr", work: "Raise canopy over parking lot", crew: "jesse", time: "8:00 AM", day: "Last week", price: 2600, status: "done", photos: 8, notes: "", phone: "(540) 555-0193" },
+);
+
+// ---------- Job folders ----------
+// Every job gets one folder. The estimate, crew photos, invoice and payment all land in it.
+export type Stage = "before" | "during" | "after";
+export const stageText: Record<Stage, string> = { before: "Before", during: "During", after: "After" };
+export type InvoiceState = "none" | "draft" | "sent" | "paid";
+export type Folder = {
+  jobId: string;
+  estimate: { no: string; date: string; signed: string | null };
+  shots: Record<Stage, number>;
+  invoice: { no: string | null; state: InvoiceState; date?: string };
+};
+const f = (jobId: string, est: string, date: string, signed: string | null, b: number, d: number, a: number, inv: Folder["invoice"] = { no: null, state: "none" }): Folder =>
+  ({ jobId, estimate: { no: est, date, signed }, shots: { before: b, during: d, after: a }, invoice: inv });
+export const folders: Folder[] = [
+  f("j1", "E-2214", "Nov 12", "Nov 13", 3, 3, 0),
+  f("j2", "E-2209", "Nov 10", "Nov 11", 2, 0, 0),
+  f("j3", "E-2219", "Nov 16", "Nov 17", 0, 0, 0),
+  f("j4", "E-2221", "Nov 18", "Nov 18", 3, 0, 0),
+  f("j5", "E-2224", "Nov 19", "Nov 19", 4, 0, 0),
+  f("j6", "E-2201", "Nov 6", "Nov 9", 1, 0, 0),
+  f("j7", "E-2226", "Nov 19", null, 2, 0, 0),
+  f("j8", "E-2218", "Nov 14", "Nov 16", 5, 0, 0),
+  f("j9", "E-2190", "Nov 2", "Nov 3", 2, 1, 2, { no: "1045", state: "paid", date: "Nov 18" }),
+  f("j10", "E-2196", "Nov 4", "Nov 5", 3, 2, 3, { no: "1046", state: "sent", date: "Nov 19" }),
+];
+export const folderPath = (j: Job) => `MIB Drive / Tree Service / Jobs / ${j.customer} - ${j.street}`;
+
+// ---------- QuickBooks (sample connection) ----------
+export const quickbooks = {
+  company: "MIB (sample company)",
+  lastSync: "9:12 AM",
+  toQB: [
+    { what: "New customers", note: "Name, address and phone. Typed once, never again." },
+    { what: "Signed estimates", note: "Show up in QuickBooks as estimates." },
+    { what: "Finished jobs", note: "Become invoices. Kat checks each one before it sends." },
+    { what: "Yard accounts", note: "One bill per company at the end of the month." },
+    { what: "Store and splitter sales", note: "One daily total, by item." },
+  ],
+  fromQB: [
+    { what: "Paid or not", note: "Each job folder shows when its invoice is paid." },
+    { what: "Who owes money", note: "Shows on the weekly numbers." },
+  ],
+  recent: [
+    { time: "9:12 AM", text: "Invoice 1046 for Cave Spring Baptist is sent" },
+    { time: "8:40 AM", text: "Pat Moran paid $480. Matched to invoice 1045" },
+    { time: "Yesterday", text: "New customer Valley Feed Co. added" },
+  ],
+};
+
+// ---------- Other tree services on Home Base (sample) ----------
+// Thomas could let other tree services use the tree side of the app under their own name.
+export type Tenant = { id: string; name: string; short: string; color: string; town: string; crews: number; people: number; jobs: number; since: string; status: "you" | "live" | "trial"; fee: number };
+export const tenants: Tenant[] = [
+  { id: "mib", name: "MIB Tree Service", short: "MIB", color: "#ec9220", town: "Roanoke", crews: 2, people: 7, jobs: 41, since: "Day one", status: "you", fee: 0 },
+  { id: "hc", name: "Hollow Creek Tree", short: "HC", color: "#2f6690", town: "Salem", crews: 3, people: 9, jobs: 52, since: "Sep", status: "live", fee: 199 },
+  { id: "ch", name: "Copper Hill Arbor", short: "CH", color: "#3c7a3a", town: "Floyd", crews: 1, people: 3, jobs: 18, since: "Oct", status: "live", fee: 199 },
+  { id: "fr", name: "Fox Run Tree Care", short: "FR", color: "#8a3b8f", town: "Bedford", crews: 2, people: 5, jobs: 4, since: "Nov 16", status: "trial", fee: 0 },
+];
+
 export type Quote = { id: string; customer: string; work: string; price: number; sent: string; age: number; by: string; hot?: boolean };
 export const quotes: Quote[] = [
   { id: "q1", customer: "Greg Hollins", work: "Remove 3 poplars near house", price: 5400, sent: "Tue", age: 3, by: "david", hot: true },
@@ -194,7 +259,8 @@ export const problems: Problem[] = [
 export type FileRef = { label: string; path: string; kind: "folder" | "doc" | "sheet" | "pdf" | "photos"; updated: string };
 export const files: { group: string; biz: Biz; items: FileRef[] }[] = [
   { group: "Tree Service", biz: "tree", items: [
-    { label: "Job photos", path: "MIB Drive / Tree Service / Job photos", kind: "photos", updated: "Today" },
+    { label: "Job folders", path: "MIB Drive / Tree Service / Jobs", kind: "folder", updated: "Today" },
+    { label: "Job photos", path: "Inside each job folder", kind: "photos", updated: "Today" },
     { label: "Quote sheet", path: "MIB Drive / Tree Service / Quotes", kind: "sheet", updated: "Yesterday" },
     { label: "Storm job checklist", path: "MIB Drive / Tree Service / Crew", kind: "doc", updated: "Nov 12" },
   ] },
@@ -214,9 +280,9 @@ export const files: { group: string; biz: Biz; items: FileRef[] }[] = [
 
 export const feeds = [
   { name: "Facebook messages", what: "Reads splitter questions. Drafts the reply.", state: "Sample" },
-  { name: "Job board", what: "Jobs, crews, quotes and photos. Lives in Home Base.", state: "Sample" },
+  { name: "Job board and crew app", what: "Jobs, crews, quotes and photos. Lives in Home Base.", state: "Sample" },
   { name: "Phone and texts", what: "Logs missed calls and texts so none get lost.", state: "Planned" },
-  { name: "QuickBooks", what: "Sends finished jobs over as invoices.", state: "Planned" },
-  { name: "Google Drive", what: "Keeps every file in the company Drive.", state: "Planned" },
+  { name: "QuickBooks", what: "Customers, estimates and invoices go over. Paid status comes back.", state: "Sample" },
+  { name: "Google Drive", what: "Every job gets its own folder in the company Drive.", state: "Sample" },
   { name: "Store sales", what: "Counts what sold today, in the store and online.", state: "Planned" },
 ];

@@ -5,6 +5,7 @@ import { Logo, cx } from "./ui";
 import { Today, Jobs, Inbox, type Ctx } from "./views";
 import { Yard, Store } from "./views2";
 import { Numbers, Goals, Huddle, Problems, Line, Files, Feeds, About } from "./views3";
+import { CrewApp, QuickBooks, Companies } from "./views4";
 
 const TABS = [
   { id: "today", label: "Today", icon: "M3 11 L12 4 L21 11 V20 H14 V14 H10 V20 H3 Z" },
@@ -15,6 +16,9 @@ const TABS = [
 ];
 
 const MORE = [
+  { id: "crew", label: "Crew app", note: "Camera and job list for the crews" },
+  { id: "quickbooks", label: "QuickBooks", note: "Invoices and payments, in step" },
+  { id: "companies", label: "Other tree services", note: "Your app, under their name" },
   { id: "numbers", label: "Weekly numbers", note: "One number per business" },
   { id: "goals", label: "90-day goals", note: "What we finish this season" },
   { id: "line", label: "Line of sight", note: "How a goal ties to this week" },
@@ -37,6 +41,7 @@ export default function HomeBase() {
   const [problems, setProblems] = useState(D.problems);
   const [checklist, setChecklist] = useState(D.openingChecklist);
   const [autoSend, setAutoSend] = useState(false);
+  const [folders, setFolders] = useState(D.folders);
   const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,9 +67,17 @@ export default function HomeBase() {
     window.scrollTo({ top: 0 });
   }, []);
 
-  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, go, say: setToast };
+  const markDone = useCallback((id: string) => {
+    setJobs((all) => all.map((j) => (j.id === id ? { ...j, status: "done" } : j)));
+    setFolders((all) => {
+      const next = 1047 + all.filter((f) => f.invoice.state === "draft").length;
+      return all.map((f) => (f.jobId === id && f.invoice.state === "none" ? { ...f, invoice: { no: String(next), state: "draft" } } : f));
+    });
+  }, []);
 
-  const View = ({ today: Today, jobs: Jobs, inbox: Inbox, yard: Yard, store: Store, numbers: Numbers, goals: Goals, line: Line, huddle: Huddle, problems: Problems, files: Files, feeds: Feeds, about: About } as Record<string, React.FC<{ c: Ctx }>>)[view];
+  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, folders, setFolders, markDone, go, say: setToast };
+
+  const View = ({ today: Today, jobs: Jobs, inbox: Inbox, yard: Yard, store: Store, numbers: Numbers, goals: Goals, line: Line, huddle: Huddle, problems: Problems, files: Files, feeds: Feeds, about: About, crew: CrewApp, quickbooks: QuickBooks, companies: Companies } as Record<string, React.FC<{ c: Ctx }>>)[view];
   const waiting = threads.filter((t) => t.state !== "sent").length;
   const inMore = MORE.some((m) => m.id === view);
 

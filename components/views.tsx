@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import * as D from "../lib/data";
-import { Card, Title, Tabs, Pill, Who, BizTag, Sheet, PhotoTile, money, cx } from "./ui";
+import { Card, Title, Tabs, Pill, Who, BizTag, Sheet, money, cx } from "./ui";
+import { JobFolder, Folders } from "./views4";
 
 type Set<T> = React.Dispatch<React.SetStateAction<T>>;
 export type Ctx = {
@@ -12,6 +13,8 @@ export type Ctx = {
   problems: D.Problem[]; setProblems: Set<D.Problem[]>;
   checklist: typeof D.openingChecklist; setChecklist: Set<typeof D.openingChecklist>;
   autoSend: boolean; setAutoSend: Set<boolean>;
+  folders: D.Folder[]; setFolders: Set<D.Folder[]>;
+  markDone: (id: string) => void;
   go: (v: string) => void;
   say: (s: string) => void;
 };
@@ -101,15 +104,24 @@ function BizCard({ b, big, small, onClick }: { b: D.Biz; big: string; small: str
 
 // ---------------- Jobs (tree service) ----------------
 export function Jobs({ c }: { c: Ctx }) {
-  const [tab, setTab] = useState<"today" | "week" | "quotes">("today");
+  const [tab, setTab] = useState<"today" | "week" | "quotes" | "folders">("today");
   const [open, setOpen] = useState<string | null>(null);
   const job = c.jobs.find((j) => j.id === open);
-  const advance = (id: string) => c.setJobs((all) => all.map((j) => (j.id === id ? { ...j, status: nextStatus[j.status] } : j)));
+  const advance = (id: string) => {
+    const j = c.jobs.find((x) => x.id === id);
+    if (j && nextStatus[j.status] === "done") return c.markDone(id);
+    c.setJobs((all) => all.map((x) => (x.id === id ? { ...x, status: nextStatus[x.status] } : x)));
+  };
 
   return (
     <div>
       <Title eyebrow="MIB Tree Service" title="Jobs" sub="Every job, crew, quote and photo in one place." />
-      <Tabs value={tab} onChange={setTab} items={[["today", "Today"], ["week", "This week"], ["quotes", "Quotes"]]} />
+      <Card className="mb-4 flex items-center gap-3 p-3" onClick={() => c.go("crew")}>
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--brand)] text-[var(--brand-ink)]" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M4 8 H8 L10 5 H14 L16 8 H20 V19 H4 Z" /><circle cx="12" cy="13" r="3.5" /></svg></span>
+        <span className="min-w-0 flex-1"><span className="block font-semibold">Crew app</span><span className="block text-sm text-[var(--muted)]">Photos go straight into each job folder</span></span>
+        <span aria-hidden="true" className="text-[var(--muted)]">›</span>
+      </Card>
+      <Tabs value={tab} onChange={setTab} items={[["today", "Today"], ["week", "Week"], ["quotes", "Quotes"], ["folders", "Folders"]]} />
 
       {tab === "today" && (
         <div className="space-y-3">
@@ -153,6 +165,8 @@ export function Jobs({ c }: { c: Ctx }) {
 
       {tab === "quotes" && <Quotes c={c} />}
 
+      {tab === "folders" && <Folders c={c} onOpen={setOpen} />}
+
       {job && (
         <Sheet eyebrow={`${job.day} · ${job.time}`} title={job.customer} onClose={() => setOpen(null)}>
           <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -166,12 +180,7 @@ export function Jobs({ c }: { c: Ctx }) {
             <div><dt className="label">Phone</dt><dd>{job.phone}</dd></div>
           </dl>
           {job.notes && <p className="mb-4 rounded-xl bg-[var(--sunk)] p-3 text-sm">{job.notes}</p>}
-          <div className="label mb-2">Job photos ({job.photos})</div>
-          {job.photos > 0 ? (
-            <div className="mb-4 grid grid-cols-3 gap-2">
-              {Array.from({ length: Math.min(job.photos, 6) }).map((_, i) => <PhotoTile key={i} seed={i + job.id.length} />)}
-            </div>
-          ) : <p className="mb-4 text-sm text-[var(--muted)]">No photos yet. The crew adds them from their phone.</p>}
+          <JobFolder j={job} c={c} />
           <div className="grid grid-cols-2 gap-2">
             <button className="btn-quiet" onClick={() => c.say(`Sample only. Texts ${job.customer}: "We are on the way."`)}>Text on my way</button>
             <button className="btn" disabled={job.status === "done"} onClick={() => advance(job.id)}>
