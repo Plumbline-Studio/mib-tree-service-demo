@@ -1,6 +1,6 @@
 // Phone preview: shows the app at iPhone width (375 px) so it can be checked on a big screen.
 const screens = [
-  ["today", "Today"], ["jobs", "Jobs"], ["inbox", "Messages"], ["yard", "Yard"],
+  ["today", "Today"], ["heard", "Heard today"], ["jobs", "Jobs"], ["inbox", "Messages"], ["yard", "Yard"],
   ["store", "Store"], ["crew", "Crew app"], ["quickbooks", "QuickBooks"], ["companies", "Other tree services"],
   ["numbers", "Weekly numbers"], ["line", "Line of sight"], ["files", "Files"],
 ];
