@@ -6,6 +6,7 @@ import { Today, Jobs, Inbox, type Ctx } from "./views";
 import { Yard, Store } from "./views2";
 import { Numbers, Goals, Huddle, Problems, Line, Files, Feeds, About } from "./views3";
 import { CrewApp, QuickBooks, Companies } from "./views4";
+import { HeardToday } from "./views5";
 
 const TABS = [
   { id: "today", label: "Today", icon: "M3 11 L12 4 L21 11 V20 H14 V14 H10 V20 H3 Z" },
@@ -16,6 +17,7 @@ const TABS = [
 ];
 
 const MORE = [
+  { id: "heard", label: "Heard today", note: "What your Pocket picked up" },
   { id: "crew", label: "Crew app", note: "Camera and job list for the crews" },
   { id: "quickbooks", label: "QuickBooks", note: "Invoices and payments, in step" },
   { id: "companies", label: "Other tree services", note: "Your app, under their name" },
@@ -43,6 +45,7 @@ export default function HomeBase() {
   const [autoSend, setAutoSend] = useState(false);
   const [folders, setFolders] = useState(D.folders);
   const [visits, setVisits] = useState(D.visits);
+  const [heard, setHeard] = useState(D.heard);
   const [toast, setToast] = useState<string | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
@@ -88,9 +91,9 @@ export default function HomeBase() {
     });
   }, []);
 
-  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, folders, setFolders, visits, setVisits, markDone, go, say: setToast };
+  const c: Ctx = { jobs, setJobs, threads, setThreads, loads, setLoads, goals, setGoals, problems, setProblems, checklist, setChecklist, autoSend, setAutoSend, folders, setFolders, visits, setVisits, heard, setHeard, markDone, go, say: setToast };
 
-  const View = ({ today: Today, jobs: Jobs, inbox: Inbox, yard: Yard, store: Store, numbers: Numbers, goals: Goals, line: Line, huddle: Huddle, problems: Problems, files: Files, feeds: Feeds, about: About, crew: CrewApp, quickbooks: QuickBooks, companies: Companies } as Record<string, React.FC<{ c: Ctx }>>)[view];
+  const View = ({ today: Today, jobs: Jobs, inbox: Inbox, yard: Yard, store: Store, numbers: Numbers, goals: Goals, line: Line, huddle: Huddle, problems: Problems, files: Files, feeds: Feeds, about: About, crew: CrewApp, quickbooks: QuickBooks, companies: Companies, heard: HeardToday } as Record<string, React.FC<{ c: Ctx }>>)[view];
   const waiting = threads.filter((t) => t.state !== "sent").length;
   const inMore = MORE.some((m) => m.id === view);
 

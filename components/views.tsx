@@ -15,6 +15,7 @@ export type Ctx = {
   autoSend: boolean; setAutoSend: Set<boolean>;
   folders: D.Folder[]; setFolders: Set<D.Folder[]>;
   visits: D.Visit[]; setVisits: Set<D.Visit[]>;
+  heard: D.Heard[]; setHeard: Set<D.Heard[]>;
   markDone: (id: string) => void;
   go: (v: string) => void;
   say: (s: string) => void;
@@ -38,6 +39,7 @@ export function Today({ c }: { c: Ctx }) {
     ...visitsToday.map((v) => ({ key: v.id, text: `${v.who} is coming at ${v.time} to buy a splitter`, sub: `One is held for them. You and Kat get a reminder at ${v.remind}.`, go: "inbox" })),
     ...needs.map((t) => ({ key: t.id, text: `${t.from} asked about a ${t.topic.toLowerCase()}`, sub: "Splitter message. Only you can answer this one.", go: "inbox" })),
     ...(drafted.length ? [{ key: "drafts", text: `${drafted.length} splitter replies are ready`, sub: "Read them and tap Send.", go: "inbox" }] : []),
+    ...(c.heard.some((h) => h.state === "new") ? [{ key: "heard", text: `${c.heard.filter((h) => h.state === "new").length} things your Pocket heard`, sub: "Tap Keep, Fix or Toss. Nothing sends first.", go: "heard" }] : []),
     { key: "quote", text: `Call ${hotQuote.customer} about the ${money(hotQuote.price)} quote`, sub: "David says they are ready to book.", go: "jobs" },
   ];
 

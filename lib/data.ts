@@ -302,3 +302,23 @@ export const feeds = [
   { name: "Google Drive", what: "Every job gets its own folder in the company Drive.", state: "Sample" },
   { name: "Store sales", what: "Counts what sold today, in the store and online.", state: "Planned" },
 ];
+
+// ---------------- Heard today (Pocket recorder) ----------------
+// Made up talks. Home Base pulls the work out of each one and waits for Thomas's OK.
+export type HeardState = "new" | "kept" | "tossed";
+export type Heard = {
+  id: string; time: string; where: string; who: string;
+  said: string; made: string; goes: string; view: string;
+  ready?: string; state: HeardState;
+};
+export const heardPlaces = ["Jobs", "David's list", "Yard", "Store", "Problems", "Promises", "Kat"];
+export const heard: Heard[] = [
+  { id: "h1", time: "7:40 AM", where: "In the truck", who: "Thomas and Marcus R.", said: "Tell Linda the second oak waits till Monday. The ground is too soft.", made: "Move Linda Parks' second oak to Monday.", goes: "Jobs", view: "jobs", ready: "A text to Linda is ready for you to send.", state: "new" },
+  { id: "h2", time: "8:05 AM", where: "Phone call", who: "Thomas and a new caller", said: "I've got a big maple over my driveway. Can somebody look Tuesday?", made: "New customer, Bev Carter. Maple over the driveway. Estimate Tue 2 PM.", goes: "David's list", view: "jobs", state: "new" },
+  { id: "h3", time: "8:20 AM", where: "At the yard", who: "Thomas and Star City Tree", said: "We brought two trailers this morning, not one.", made: "Star City Tree: 1 trailer missing from the gate log.", goes: "Yard", view: "yard", state: "new" },
+  { id: "h4", time: "8:45 AM", where: "Phone call", who: "Thomas and Pastor Dale", said: "You'll have that invoice by Monday.", made: "Promise: Hillcrest Church invoice by Monday.", goes: "Promises", view: "quickbooks", state: "new" },
+  { id: "h5", time: "9:10 AM", where: "At the store", who: "Thomas and Kat", said: "We're down to 22 heavy tarps. Get two more cases.", made: "Order 2 cases of heavy tarps before opening.", goes: "Store", view: "store", state: "new" },
+  { id: "h6", time: "9:25 AM", where: "On the radio", who: "Thomas and Jesse", said: "The chipper is making that noise again.", made: "Problem: chipper is making a noise. Send it to Ray.", goes: "Problems", view: "problems", state: "new" },
+  { id: "h7", time: "9:40 AM", where: "Phone call", who: "Thomas and Tom Whitlow", said: "I'll have my truck out of the driveway by Monday.", made: "Note on Monday's job: Tom Whitlow moves his truck first.", goes: "Jobs", view: "jobs", state: "new" },
+];
+export const heardSkipped = 5;
