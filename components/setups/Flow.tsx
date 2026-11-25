@@ -48,8 +48,8 @@ export default function Flow() {
                     <div className="mt-1 flex items-center justify-between">
                       <span className="text-sm font-semibold tabular-nums">{t.money}</span>
                       <span className="flex gap-1">
-                        <button aria-label="Move back" onClick={() => move(t.id, -1)} className="h-8 w-8 rounded-lg bg-[var(--sunk)] text-sm">◀</button>
-                        <button aria-label="Move on" onClick={() => move(t.id, 1)} className="h-8 w-8 rounded-lg bg-[#ec9220] text-sm">▶</button>
+                        {s !== stages[0] && <button aria-label="Move back" onClick={() => move(t.id, -1)} className="h-8 w-8 rounded-lg bg-[var(--sunk)] text-sm">◀</button>}
+                        {s !== stages[stages.length - 1] && <button aria-label="Move on" onClick={() => move(t.id, 1)} className="h-8 w-8 rounded-lg bg-[#ec9220] text-sm">▶</button>}
                       </span>
                     </div>
                     {t.note && <div className={cx("mt-1 text-xs", /Thomas|late/.test(t.note) ? "font-semibold text-[var(--bad)]" : "text-[var(--muted)]")}>{t.note}</div>}

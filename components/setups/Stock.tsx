@@ -6,7 +6,7 @@ import { Box, Tone, UnitDot } from "./Frame";
 
 const landed = (p: { paid: number; freight: number; tariffPct: number }) => p.paid * (1 + p.tariffPct / 100) + p.freight;
 const usd = (v: number) => `$${Math.round(v).toLocaleString("en-US")}`;
-const usd2 = (v: number) => `$${v.toFixed(2)}`;
+const usd2 = (v: number) => `$${v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export default function Stock() {
   const [paid, setPaid] = useState(3.25);
@@ -25,7 +25,7 @@ export default function Stock() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Box className="p-4"><div className="label">Money sitting on the shelf</div><div className="font-display text-4xl leading-none">{usd(tiedUp)}</div><div className="text-sm text-[var(--muted)]">at what it cost you</div></Box>
           <Box className="p-4"><div className="label">Loan cost on that stock</div><div className="font-display text-4xl leading-none text-[var(--bad)]">$100 a day</div><div className="text-sm text-[var(--muted)]">about $3,000 a month</div></Box>
-          <Box className="p-4"><div className="label">Sitting over 1 year</div><div className="font-display text-4xl leading-none">2 items</div><div className="text-sm text-[var(--muted)]">wheelbarrows and shovels</div></Box>
+          <Box className="p-4"><div className="label">Slowest seller</div><div className="font-display text-4xl leading-none">488 wheelbarrows</div><div className="text-sm text-[var(--muted)]">about $23,300 waiting to sell</div></Box>
         </div>
 
         <Box className="overflow-x-auto p-4">

@@ -8,12 +8,14 @@ const viaIcon: Record<Msg["via"], string> = { Facebook: "💬", Text: "📱", Ca
 
 function guess(t: string): { unit: Unit; who: string } {
   const s = t.toLowerCase();
-  if (/slab|walnut|mill|log/.test(s)) return { unit: "slabs", who: "Thomas" };
-  if (/ship|order|freight|box/.test(s)) return { unit: "ship", who: "Kat" };
-  if (/yard|dump|load|mulch|grind/.test(s)) return { unit: "yard", who: "Kat" };
-  if (/store|splitter|shovel|stock|glove/.test(s)) return { unit: "store", who: "Kat" };
-  if (/bill|pay|invoice|quickbooks|call/.test(s)) return { unit: "office", who: "Kat" };
-  return { unit: "tree", who: "David" };
+  const named = /\bkat\b/.test(s) ? "Kat" : /\bdavid\b/.test(s) ? "David" : /\bmarcus\b/.test(s) ? "Marcus" : null;
+  const pick = (unit: Unit, who: string) => ({ unit, who: named ?? who });
+  if (/ship|freight|crate|box|richmond|charlotte/.test(s)) return pick("ship", "Kat");
+  if (/slab|walnut|cherry|mill|log/.test(s)) return pick("slabs", "Thomas");
+  if (/yard|dump|load|mulch|grind/.test(s)) return pick("yard", "Kat");
+  if (/store|splitter|shovel|stock|glove/.test(s)) return pick("store", "Kat");
+  if (/bill|pay|invoice|quickbooks|call/.test(s)) return pick("office", "Kat");
+  return pick("tree", "David");
 }
 
 export default function Inbox() {
@@ -60,6 +62,21 @@ export default function Inbox() {
             </Box>
           ))}
         </div>
+        {tab === "needs" && handled.length > 0 && (
+          <div className="mt-4">
+            <div className="label mb-1">Handled while you were busy</div>
+            <div className="space-y-1">
+              {handled.map((m) => (
+                <div key={m.id} className="flex flex-wrap items-center gap-2 rounded-lg bg-[var(--good-bg)] px-3 py-2 text-sm">
+                  <UnitDot u={m.unit} />
+                  <span className="font-semibold">{m.from}</span>
+                  <span className="text-[var(--muted)]">{viaIcon[m.via]} {m.time}</span>
+                  <span className="text-[var(--good)]">✓ {m.did}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="space-y-4">
